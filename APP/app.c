@@ -61,7 +61,6 @@ u8      encrypt_table[32] ;
 u8      seq_table[32] ;
 u8      data[32] ;
 
-
 void task_led(void) ;
 void task_serialDetect(void)    ;
 void task_serialBack(void)  ;
@@ -112,8 +111,7 @@ void task_serialDetect(void)
         user_time_update_flag = 0 ;
         MRTC_Set((GD_BUF[0x30]&0xFFFF),((GD_BUF[0x31]>>8)&0xFF),(GD_BUF[0x31]&0xFF),((GD_BUF[0x32]>>8)&0xFF),(GD_BUF[0x32]&0xFF),(GD_BUF[0x33]&0xFF)) ;
     }
-    
-    
+		
     tasks[TASK_SERIAL_DETECT_PRO].td = 0 ;
 }
 
