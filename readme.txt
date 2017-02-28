@@ -21,6 +21,8 @@ x02
 2. 修改为LED地址PC13为PD引脚
 3. 待续
 
+x03 
+ 代码可以作为基本版本，用于之后的设计
 
 以上：
 1. git clone  https://github.com/mybuf/STM32_sch.git
