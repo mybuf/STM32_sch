@@ -2,8 +2,8 @@
 #include "stm32f10x.h"
 
 void LED_config(void) ;
-#define LED_OFF GPIO_SetBits(GPIOB,GPIO_Pin_0)
-#define LED_ON GPIO_ResetBits(GPIOB,GPIO_Pin_0)
+#define LED_OFF GPIO_SetBits(GPIOC,GPIO_Pin_13)
+#define LED_ON GPIO_ResetBits(GPIOC,GPIO_Pin_13)
 
 #define LED_0_0_0_1 0x000000FF
 #define LED_1_1 0x0000FFFF

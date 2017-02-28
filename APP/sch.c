@@ -21,7 +21,7 @@ void dectimers(void)
 }
 
 // ÈÎÎñÖ´ĞĞ
-void runtasks(void)
+void runtasks(struct TASK tasks[])
 {
     u32 i ;
     for(i=0;i<MAXTASKS;i++)
