@@ -10,4 +10,4 @@ struct TASK{
 
 void settimer(char *lc,char line,char tmrid,int d) ;
 void dectimers(void) ;
-void runtasks(struct TASK tasks[]) ;
+void runtasks(void) ;

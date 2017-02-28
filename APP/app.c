@@ -52,8 +52,6 @@ u8      bkp_avild ;
 
 u8      user_id_update_flag      ;   //  标识有序列号改变
 u8      user_time_update_flag    ;   //  标识有时间修改
-u8      user_encrypt_update_flag ;   //  加解密标识
-u8      user_encrypt_agent_agent_flag  ;
 
 u8      flash_rd_limit  ;
 
@@ -101,7 +99,6 @@ void task_led(void)
 //
 void task_serialDetect(void)
 {
-    u8  i;
     
     if(rx_wr_p!=rx_rd_p) {
         pack_link() ;
@@ -116,16 +113,6 @@ void task_serialDetect(void)
         MRTC_Set((GD_BUF[0x30]&0xFFFF),((GD_BUF[0x31]>>8)&0xFF),(GD_BUF[0x31]&0xFF),((GD_BUF[0x32]>>8)&0xFF),(GD_BUF[0x32]&0xFF),(GD_BUF[0x33]&0xFF)) ;
     }
     
-    if(user_encrypt_agent_agent_flag) {
-        
-        if(GD_BUF[0x0A]==2099 || GD_BUF[0x0A]<2016) {
-            for(i=0;i<4;i++) {
-                GD_BUF[0x60+i] = GD_BUF[0x15+i] ;
-            }
-            flash_program_mcu() ;
-        }
-        user_encrypt_agent_agent_flag = 0 ;
-    }
     
     tasks[TASK_SERIAL_DETECT_PRO].td = 0 ;
 }
@@ -244,12 +231,6 @@ void SysTick_Handler(void)
 
 ///////////////////////////////////////////////////////////////////////////
 
-	struct TASK MYtasks[] = {
-			{task_led,100},
-			{task_serialDetect,100},
-			{task_serialBack,100}
-		};
-
 int main(void)
 {
     led_buf = LED_1_1 ;
@@ -261,22 +242,15 @@ int main(void)
     
 ///////////////////////////////////////////////////////////////////////////
     bsp_config() ;
-    
 ///////////////////////////////////////////////////////////////////////////
     
 		tasks[TASK_LED_PRO].fp = task_led ;
 		tasks[TASK_SERIAL_DETECT_PRO].fp = task_serialDetect ;
 		tasks[TASK_SERIAL_BACK_PRO].fp = task_serialBack ;
-  //  tasks[TASK_STATUS_CHECK_PRO].fp = task_statusCheck ;
-  //  tasks[TASK_RTC_PRO].fp = task_rtc ;
-  //  tasks[TASK_ENCRYPT_PRO].fp = task_encrypt_cal ;
     	
     tasks[TASK_LED_PRO].td = 2000 ;
     tasks[TASK_SERIAL_DETECT_PRO].td = 2000 ;
     tasks[TASK_SERIAL_BACK_PRO].td = 5000 ;
-  // tasks[TASK_STATUS_CHECK_PRO].td = 100;
-  // tasks[TASK_RTC_PRO].td = 100 ;
-  // tasks[TASK_ENCRYPT_PRO].td = 100 ;
     
     MRTC_Get() ;
     MRTC_Get() ;
@@ -284,7 +258,7 @@ int main(void)
     while(1) 
     {
         IWDG_ReloadCounter() ;// 喂狗
-        runtasks(tasks) ;
+        runtasks() ;
     }
 }
 

@@ -19,9 +19,6 @@ extern u16 flash_tab[512] ;
 
 extern u8 user_id_update_flag ;
 extern u8 user_time_update_flag ;
-extern u8 user_passwd_update_flag ;
-extern u8 user_passwd_detect_flag ;
-extern u8 user_encrypt_update_flag ;
 
 extern u8 flash_rd_limit    ;
 
@@ -36,12 +33,12 @@ void USART_config(void)
     GPIO_InitTypeDef GPIO_InitStructure ;
     RCC_APB2PeriphClockCmd( RCC_APB2Periph_USART1 , ENABLE);	 //使能串口1时钟
     
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				     //LED1    配置为通用推挽输出  
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;				     //LED1    配置为通用推挽输出  
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;			 //口线翻转速度为50MHz
     GPIO_Init(GPIOA, &GPIO_InitStructure);		
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;				     //LED1    配置为通用推挽输出  
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;				     //LED1    配置为通用推挽输出  
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
         
@@ -189,10 +186,6 @@ void pack_detect(void)
                                     // 更新时间标识
                                     if((pack_buf[6]*256+pack_buf[7] + i)>0x2F && (pack_buf[6]*256+pack_buf[7] + i)<0x34) {
                                         user_time_update_flag = 1 ;
-                                    }
-                                    
-                                    if((pack_buf[6]*256+pack_buf[7] + i)>0x27 && (pack_buf[6]*256+pack_buf[7] + i)<0x2D) {
-                                        user_encrypt_update_flag = 1 ;
                                     }
                                 }
                            }
