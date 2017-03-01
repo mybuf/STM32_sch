@@ -83,6 +83,10 @@ void bsp_config(void)
     cpu2fpga_config() ;
     LED_config() ;
     //MRTC_Init() ;
-    Clock_ini() ;
+    //Clock_ini() ;
+    
+    SPI1_Init() ;
+    
+    
     WDG_Configuration() ;
 }

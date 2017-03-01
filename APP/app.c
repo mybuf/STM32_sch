@@ -4,7 +4,9 @@
 #include "bsp.h"
 #include "usart.h"
 #include "flash.h"
-
+#include "ENC28J60.H"
+#include "ip_arp_udp_tcp.h"
+#include "simple_server.h"
 
 
 char date[] = __DATE__     ;
@@ -61,6 +63,8 @@ u8      encrypt_table[32] ;
 u8      seq_table[32] ;
 u8      data[32] ;
 
+extern u32 task_time[MAXTASKS] ;
+
 void task_led(void) ;
 void task_serialDetect(void)    ;
 void task_serialBack(void)  ;
@@ -89,7 +93,8 @@ void task_led(void)
         }
     }
     
-    tasks[TASK_LED_PRO].td = 50 ;
+    //tasks[TASK_LED_PRO].td = 50 ;
+  //  return 50 ;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -112,7 +117,8 @@ void task_serialDetect(void)
         MRTC_Set((GD_BUF[0x30]&0xFFFF),((GD_BUF[0x31]>>8)&0xFF),(GD_BUF[0x31]&0xFF),((GD_BUF[0x32]>>8)&0xFF),(GD_BUF[0x32]&0xFF),(GD_BUF[0x33]&0xFF)) ;
     }
 		
-    tasks[TASK_SERIAL_DETECT_PRO].td = 0 ;
+    //tasks[TASK_SERIAL_DETECT_PRO].td = 0 ;
+ //   return 10 ;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -132,7 +138,8 @@ void task_serialBack(void)
             while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);
         }
     }
-    tasks[TASK_SERIAL_BACK_PRO].td = 1000 ;
+    //tasks[TASK_SERIAL_BACK_PRO].td = 1000 ;
+   // return 1000 ;
 }
 
 
@@ -197,8 +204,9 @@ void task_statusCheck(void)
         GD_BUF[7] |= (1<<3) ;
     }
     
-    tasks[TASK_STATUS_CHECK_PRO].td = 3000 ;
+   // tasks[TASK_STATUS_CHECK_PRO].td = 3000 ;
     
+   // return 3000 ;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -216,8 +224,10 @@ void task_rtc(void)
     }
     MRTC_Get() ;
     
-    tasks[TASK_RTC_PRO].td = 2000 ;
+    //tasks[TASK_RTC_PRO].td = 2000 ;
+   // return 2000 ;
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -228,6 +238,11 @@ void SysTick_Handler(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////
+
+unsigned char mymac[6] ={0x54,0x55,0x58,0x10,0x00,0x24};
+unsigned char myip[4] = {192,168,1,88};
+
+unsigned int mywwwport =80; // listen port for tcp/www (max range 1-254)
 
 int main(void)
 {
@@ -241,16 +256,33 @@ int main(void)
 ///////////////////////////////////////////////////////////////////////////
     bsp_config() ;
 ///////////////////////////////////////////////////////////////////////////
+    //initial my enc28j60
+    enc28j60Init(mymac) ; // 初始化 PHY
+    server_init() ;//初始化网络
+   // init_ip_arp_udp_tcp(mymac,myip,mywwwport) ;
+   // enc28j60PhyWrite(PHLCON,0x7A4) ;
+   // enc28j60clkout(2) ; // chang clkout from 6.25MHz to 12.5MHz
     
-		tasks[TASK_LED_PRO].fp = task_led ;
-		tasks[TASK_SERIAL_DETECT_PRO].fp = task_serialDetect ;
-		tasks[TASK_SERIAL_BACK_PRO].fp = task_serialBack ;
-    	
-    tasks[TASK_LED_PRO].td = 2000 ;
-    tasks[TASK_SERIAL_DETECT_PRO].td = 2000 ;
-    tasks[TASK_SERIAL_BACK_PRO].td = 5000 ;
+///////////////////////////////////////////////////////////////////////////
     
-    MRTC_Get() ;
+    
+	tasks[15].fp = task_led ;
+	tasks[5].fp = task_serialDetect ;
+	tasks[20].fp = task_serialBack ;
+    tasks[10].fp = simple_server ;
+   
+    
+    tasks[15].td = 2000 ;
+    tasks[5].td = 2000 ;
+    tasks[20].td = 5000 ;
+    tasks[10].td = 1000 ;
+    
+    // 预设置定时
+    task_time[15] = 50 ;
+    task_time[5] = 10 ;
+    task_time[20] = 3000 ;
+    task_time[10] = 5 ;
+    
     MRTC_Get() ;
     	
     while(1) 

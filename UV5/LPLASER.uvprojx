@@ -10,7 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F103CB</Device>
@@ -330,12 +330,11 @@
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
-            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\RTE\Device\STM32F103C8;.\RTE;..\APP;..\BSP;..\BSP\cpu2fpga;..\BSP\led;..\BSP\my_rtc;..\BSP\usart;..\BSP\USB;..\BSP\flash</IncludePath>
+              <IncludePath>.\RTE\Device\STM32F103C8;.\RTE;..\APP;..\BSP;..\BSP\cpu2fpga;..\BSP\led;..\BSP\my_rtc;..\BSP\usart;..\BSP\USB;..\BSP\flash;..\BSP\ENC28J60;..\BSP\SPI;..\BSP\UIP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -348,7 +347,6 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -424,6 +422,31 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\usart\usart.c</FilePath>
             </File>
+            <File>
+              <FileName>ENC28J60.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\ENC28J60\ENC28J60.C</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\SPI\SPI.C</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>UIP</GroupName>
+          <Files>
+            <File>
+              <FileName>ip_arp_udp_tcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\UIP\ip_arp_udp_tcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>simple_server.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\UIP\simple_server.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -494,6 +517,12 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RTC" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1xx STDPERIPH">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="2.1.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="SPI" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1xx STDPERIPH RCC">
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="2.1.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

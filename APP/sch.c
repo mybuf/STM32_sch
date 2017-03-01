@@ -2,7 +2,9 @@
 #include "sch.h"
 
 
-struct TASK tasks[MAXTASKS] ;
+struct TASK tasks[MAXTASKS];
+
+u32 task_time[MAXTASKS] = {0} ;
 
 // …Ë÷√∂® ±∆˜
 void settimer(char *lc,char line,char tmrid,int d)
@@ -28,8 +30,10 @@ void runtasks(void)
     {
         if(tasks[i].fp!=0)
         {
-            if(tasks[i].td==0)
+            if(tasks[i].td==0) {
                 tasks[i].fp() ;
+                tasks[i].td = task_time[i] ;
+            }
         }
     }
 }
