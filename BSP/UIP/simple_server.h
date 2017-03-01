@@ -4,7 +4,7 @@
 #include  "ENC28J60.h"
 
 void server_init(void)  ;
-u32 simple_server(void) ;
+void simple_server(void) ;
 
 #endif
 

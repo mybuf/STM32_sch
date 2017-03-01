@@ -357,6 +357,4 @@ u32 simple_server(void)
 			make_udp_reply_from_request(buf,str,strlen(str),myudpport);
 			
 			}
-        
-        return 300 ;
 	}
